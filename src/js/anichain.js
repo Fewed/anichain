@@ -28,9 +28,7 @@ let gs = element => getComputedStyle(element);
 // main features
 
 function CreateAnimatedObject(element) {
-	let that = this;
-
-	Object.defineProperties(that, {
+	Object.defineProperties(this, {
 		x: {
 			get: () => parseInt(gs(element).left),
 			set: num => element.style.left = `${num}px`
@@ -74,22 +72,23 @@ function CreateAnimatedObject(element) {
 
 	this.asyncWrap = (action, args, condition) => {
 		return new Promise(resolve => {
-			(function loop() {
+			let loop = () => {
 				if (condition()) {
 					action(...args());
 					raf(loop);
 				}
 				else {
-					that.t = 0;
+					this.t = 0;
 					resolve();
 				}
-			})();
+			};
+			loop();
 		});
 	};
 }
 
 
-let init = (selector, num = -1) => {
+function init(selector, num = -1) {
 	let elements = (num !== -1) ? sel(selector)[num] : sel(selector);
 	if (elements.length === undefined) return new CreateAnimatedObject(elements);
 	else return elements.map(item => new CreateAnimatedObject(item));
