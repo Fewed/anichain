@@ -4,9 +4,9 @@
 
 Библиотека anichain.js предназначена для управления последовательностью вызова пользовательских анимаций.
 
-[Демо 1](msementsov.ru/anichain/demo)
+[Демо 1](http://msementsov.ru/anichain/demo/)
 
-[Демо 2](msementsov.ru/anichain/game)
+[Демо 2](http://msementsov.ru/anichain/game/)
 
 ## Подключение
 
