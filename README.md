@@ -45,10 +45,11 @@ display – отображение элемента.
 	<div class="elem"></div>
 </body>
 
+```
 let elems = init(".elem");
-
 [elems[0].x, elems[1].x] = [200, 400];
 elems.map(item => item.y = item.w = item.h = 100);
+```
 
 2. chain([pos, obj, fun, arg, con], ...) – функция для вызова последовательности анимаций. Каждая анимация описывается массивом параметров:
 
