@@ -7,6 +7,7 @@
 [Демо 1](http://msementsov.ru/anichain/demo/)
 
 [Демо 2](http://msementsov.ru/anichain/game/)
+[I'm an inline-style link](https://www.google.com)
 
 ## Подключение
 
