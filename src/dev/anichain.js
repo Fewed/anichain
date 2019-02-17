@@ -75,51 +75,56 @@ async function chain(...arr) {
 	}
 }
 
-function init(arr) {
+function init(arr, ...coords) {
 	arr = sel(arr);
 
-	const create = (el) => {
+	const create = (el, i) => {
 		el.style.position = "absolute";
-		return new AnimEl(el);
+		el = new AnimEl(el);
+		if (coords.length && coords[i]) [el.x, el.y] = coords[i];
+		return el;
 	};
 
-	return arr.length ? arr.map((el) => create(el)) : create(el);
+	return arr.length ? arr.map((el, i) => create(el, i)) : create(arr, 0);
 }
 
-const [el, el2] = init("div");
-l(el);
+//--------------------------------------------------------------
+
+const coords = [0, 220];
+
+const [el, el2] = init("div", coords);
 
 function move(dir = "x") {
 	dir === "x" ? ++this.x : ++this.y;
 }
 
+function cond(val) {
+	return el.t < val;
+}
+
 const ch = () =>
 	chain(
-		[
-			0,
-			el,
-			move,
-			() => [],
-			function() {
-				return this.t < 100;
-			},
-		],
-		[
-			1,
-			el,
-			move,
-			() => ["y"],
-			function() {
-				return this.t < 100;
-			},
-		],
+		[0, el, move, () => [], () => cond(50)],
+		[1, el, move, () => ["y"], () => cond(100)],
 		() => {
-			el.x = 0;
-			el.y = 200;
+			[el.x, el.y] = coords;
 			ch();
 		},
 	);
 
 ch();
 
-export { l, sel, gs, lis, raf, crAr };
+// const el = init("h1", [100, 100]);
+
+// function blink() {
+// 	if (this.t) return;
+// 	this.display = this.display === "block" ? "none" : "block";
+// }
+
+// function cond(delay = 500) {
+// 	return this.t < Math.round(0.06 * delay);
+// }
+
+// const ch = () => chain([0, el, blink, () => [], cond], ch);
+
+// ch();
