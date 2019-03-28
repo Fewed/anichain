@@ -1,17 +1,19 @@
-const sel = (target) => {
+const utils = {
+	sel: (target) => {
 		const temp = [...document.querySelectorAll(target)];
 		return temp.length !== 1 ? temp : temp[0];
 	},
-	crAr = (size, val = 0) => [...Array(size)].map(() => val),
-	l = console.log.bind(console),
-	lis = window.addEventListener,
-	raf = requestAnimationFrame,
-	gs = getComputedStyle;
+	crAr: (size, val = 0) => [...Array(size)].map(() => val),
+	l: console.log.bind(console),
+	lis: window.addEventListener,
+	raf: requestAnimationFrame,
+	gs: getComputedStyle,
+};
 
-class AnimEl extends null {
+const { sel, gs, crAr, raf, l } = utils;
+
+class AnimEl {
 	constructor(element) {
-		super();
-
 		this.t = 0;
 
 		const styles = {
@@ -36,9 +38,9 @@ class AnimEl extends null {
 					return res;
 				},
 				set(val) {
+					const style = gs(element)[prop];
 					let res = val;
-					const st = gs(element)[prop];
-					if (st.includes("px")) res = `${val}px`;
+					if (style.includes("px")) res = `${val}px`;
 					else if (prop === "transform") res = `rotate(${val}deg)`;
 					element.style[prop] = res;
 				},
@@ -46,8 +48,8 @@ class AnimEl extends null {
 		});
 	}
 
-	animWrapper(action, args, cond) {
-		return new Promise((resolve) => {
+	animWrapper = (action, args, cond) =>
+		new Promise((resolve) => {
 			const run = () => {
 				if (cond()) {
 					action(...args());
@@ -57,10 +59,9 @@ class AnimEl extends null {
 			};
 			run();
 		});
-	}
 }
 
-async function chain(...arr) {
+const chain = async (...arr) => {
 	for (let i in arr) {
 		const [item, itemNext] = [arr[i], arr[i + 1]];
 
@@ -73,9 +74,9 @@ async function chain(...arr) {
 			aw = obj.animWrapper.bind(obj, fun.bind(obj), arg, con.bind(obj));
 		item !== itemNext ? await aw() : aw();
 	}
-}
+};
 
-function init(arr, ...coords) {
+const init = (arr, ...coords) => {
 	arr = sel(arr);
 
 	const create = (el, i) => {
@@ -85,46 +86,7 @@ function init(arr, ...coords) {
 		return el;
 	};
 
-	return arr.length ? arr.map((el, i) => create(el, i)) : create(arr, 0);
-}
+	return arr.length ? arr.map(create) : create(arr, 0);
+};
 
-//--------------------------------------------------------------
-
-const coords = [0, 220];
-
-const [el, el2] = init("div", coords);
-
-function move(dir = "x") {
-	dir === "x" ? ++this.x : ++this.y;
-}
-
-function cond(val) {
-	return el.t < val;
-}
-
-const ch = () =>
-	chain(
-		[0, el, move, () => [], () => cond(50)],
-		[1, el, move, () => ["y"], () => cond(100)],
-		() => {
-			[el.x, el.y] = coords;
-			ch();
-		},
-	);
-
-ch();
-
-// const el = init("h1", [100, 100]);
-
-// function blink() {
-// 	if (this.t) return;
-// 	this.display = this.display === "block" ? "none" : "block";
-// }
-
-// function cond(delay = 500) {
-// 	return this.t < Math.round(0.06 * delay);
-// }
-
-// const ch = () => chain([0, el, blink, () => [], cond], ch);
-
-// ch();
+export { init, chain, utils };
