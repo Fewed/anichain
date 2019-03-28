@@ -1,6 +1,4 @@
-# anichain.js
-
-## Описание
+# anichain
 
 Библиотека **anichain.js** предназначена для управления последовательностью вызова пользовательских анимаций.
 
@@ -8,7 +6,52 @@
 
 [Демо 2](http://msementsov.ru/anichain/game/)
 
-## Вспомогательные средства
+## Содержание
+
+- [Установка](#installation)
+- [Использование](#Использование)
+- [Поддержка](#support)
+- [Развитие](#contributing)
+
+## Установка
+
+```sh
+npm i anichain
+```
+
+## Использование
+
+```sh
+
+import { init, chain } from "anichain";
+
+const coords = [0, 220];
+
+const [el, el2] = init("div", coords);
+
+function move(dir = "x") {
+	dir === "x" ? ++this.x : ++this.y;
+}
+
+function cond(val) {
+	return el.t < val;
+}
+
+const ch = () =>
+	chain(
+		[0, el, move, () => [], () => cond(50)],
+		[1, el, move, () => ["y"], () => cond(100)],
+		() => {
+			[el.x, el.y] = coords;
+			ch();
+		},
+	);
+
+ch();
+
+```
+
+### Описание
 
 Библиотека содержит следующие вспомогательные функции:
 
@@ -27,7 +70,7 @@
 
 _src_ – ссылка на исходный DOM элемент;
 
-_t_ – искусственно добавленное свойство, не связанное с каким-либо свойством исходного DOM элемента. Обычно используется как счетчик в условии con циклического вызова анимации через функцию **chain([pos, obj, fun, arg, con], ...)**;
+_t_ – искусственно добавленное свойство, не связанное с каким-либо свойством исходного DOM элемента. Может использоваться как счетчик в условии con циклического вызова анимации через функцию **chain([pos, obj, fun, arg, con], ...)**;
 
 _x, y_ – координаты элемента в пикселях при абсолютном позиционировании;
 
@@ -143,3 +186,11 @@ function move2() {this.y += 5}
 ```
 
 Первая анимация – бесконечное вращение block1. Одновременно с ней стартует анимация движения block2. Если по ее окончании block2.x > 100, запустится анимация на block3. В противном случае она будет пропущена. Далее последовательно выполнятся анимации на block4 и block5.
+
+## Поддержка
+
+Please [open an issue](https://github.com/Fewed/coursehunters-downloader/issues/new) for support.
+
+## Развитие
+
+Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and [open a pull request](https://github.com/Fewed/coursehunters-downloader/compare).
