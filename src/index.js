@@ -1,16 +1,12 @@
-const utils = {
-  sel: target => {
+const sel = target => {
     const temp = [...document.querySelectorAll(target)];
     return temp.length !== 1 ? temp : temp[0];
   },
-  crAr: (size, val = 0) => [...Array(size)].map(() => val),
-  l: console.log.bind(console),
-  lis: window.addEventListener,
-  raf: requestAnimationFrame,
-  gs: getComputedStyle
-};
-
-const { sel, gs, crAr, raf, l } = utils;
+  crAr = (size, val = 0) => [...Array(size)].map(() => val),
+  l = console.log.bind(console),
+  lis = window.addEventListener,
+  raf = requestAnimationFrame,
+  gs = getComputedStyle;
 
 class AnimEl {
   constructor(element) {
@@ -91,4 +87,4 @@ const init = (arr, ...coords) => {
   return arr.length ? arr.map(create) : create(arr, 0);
 };
 
-export { init, chain, utils };
+export { init, chain };
