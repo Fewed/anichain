@@ -1,5 +1,5 @@
 {
-  "name": "anichain",
+  "name": "anichain-test",
   "version": "1.0.0",
   "description": "JS animations chaining library",
   "main": "anichain.min.js",
@@ -47,6 +47,7 @@
     "@babel/plugin-proposal-class-properties": "^7.2.3",
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/runtime": "^7.3.1",
+    "anichain": "^1.0.0",
     "babel-polyfill": "^6.26.0"
   }
 }
